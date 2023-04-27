@@ -139,13 +139,6 @@ i:hover{
 //! 2. 形狀 秒->正方形 (最外)、分->三角形(第二)、時 ->圓形->最內
 //! 1. z-index 秒->分->時間 
 
-// hand 共同 styles
-.hour-hand, .minute-hand {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: bottom center; /* 設定轉軸為底部中心 */
-}
 
 // 秒針
 .secHandler {
@@ -155,6 +148,7 @@ i:hover{
   z-index: 3;
   width: 100%;
   height: 100%;
+  transform: rotate(225deg);
 
   &::after {
    position: absolute;
@@ -168,8 +162,8 @@ i:hover{
 
 .second-hand {
    position: absolute;
-    top: 50%;
-    left: 50%;
+    top:75%;
+    left:75%;
     height: 70%;
     width: 10px;
     border-radius: 2px;
@@ -181,49 +175,87 @@ i:hover{
 
 
 
-.hour-hand {
-    height: 50px;
-    width: 10px;
-    background-color: black;
-    border-radius: 10px;
-    transform-origin: bottom center; /* 設定轉軸為底部中心 */
-}
-
-
 .minHandler {
-    // height: 80px;
-    // width: 6px;
+  // width: 0;
+  // height: 0;
+  // border-style: solid;
+  // border-width: 270px 155px 250px;
+  // border-color: transparent transparent #ff0000 transparent;
+  // transform-origin: center bottom;
+  // position: absolute;
+  // left: 45%;
+  // top: -95%;
+  // transform: rotate(0deg);
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  width: 65%;
+  height: 65%;
+   z-index: 2;
+  // background: $primary-color;
+  // &::before{
+  //   content: "";
+  //   width: 0;
+  //   height: 0;
+  //   border-style: solid;
+  //   border-width: 0 1500px 153px 25px;
+  //   border-color: transparent transparent $bg-color transparent;
+  //   transform-origin: center bottom;
+  //   position: absolute;
+  //   left: 50%;
+  //   top: 50%;
+  //   transform: rotate(0deg);
+  // }
+  // &::after{
+  //   content: "";
+  //   position: absolute;
+  //   width: 50%;
+  //   height: 100%;
+  //   bottom: 0;
+  //   right: 0;
+  //   background: $bg-color;
+  // }
 
-    // border-radius: 6px;
-    // transform-origin: bottom center; 
-    // z-index: 30;
-    // width: 0;
-    // height: 0;
-    // border-left:300px solid transparent;
-    // border-right: 300px solid transparent;
-    // border-bottom: 300px solid $primary-color;
 }
 
 .minute-hand {
-
     position: absolute;
-    top:45%;
-    left: 25%;
-    height: 70%;
-    width: 10px;
+    width: 60%;
+    height:10px;
     border-radius: 2px;
     border: 5px $primary-color solid;
-    transform: translate(-30%, -10%) rotate(45deg);
-    
+    top: 23%;
+    left: -10%;
+    transform: translateY( -50%) rotate(45deg);
 }
 
-
-.minute-clock{
-  width: 50%;
-  height: 50%;
+.hrHandler{
+   position: absolute;
+  top: 30%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  width: 45%;
+  height: 45%;
+  border: 3px solid $primary-color;
+  z-index: 1;
   border-radius: 50%;
-  
+
 }
+
+.hour-hand {
+  position: absolute;
+  top: -25%;
+  left: 25%;
+  transform: translate(-50%,-50%)  rotate(155deg);
+  height: 50%;
+  width: 10px;
+  border:4px solid $primary-color;
+  border-radius: 6px;
+  transform-origin: bottom center; /* 設定轉軸為底部中心 */
+}
+
+
 
 .center{
   width: 100%;
@@ -249,6 +281,7 @@ i:hover{
      z-index: -20;
   }
 }
+
 header{
   font-size: 24px;
   color:#000;
