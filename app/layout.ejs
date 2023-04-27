@@ -141,6 +141,7 @@
 
   function showTime() {
 
+    // 一開使用 init 的，接下來再用 update 的
     const timeData = new Date();
     const hr = timeData.getHours();
     const min = timeData.getMinutes();
@@ -152,7 +153,7 @@
 
 
     secHandler.setAttribute('style', 'transform: rotate(' + secRotate + 'deg)');
-    // console.log(secRotate)
+
     minHandler.setAttribute('style', 'transform: rotate(' + minRotate + 'deg)');
 
     hrHandler.setAttribute('style', 'transform: rotate(' + hrRotate + 'deg)');
@@ -161,9 +162,24 @@
   window.requestAnimationFrame(showTime);
   // 修改上面
   function updateClock() {
+
+    const timeData = new Date();
     const hour = hourInput.value;
     const minute = minuteInput.value;
     const second = secondInput.value;
+    const secMillis = timeData.getMilliseconds();
+
+    const secRotate = (second + 7) * 6 + secMillis * 0.006 + 180;
+    const minRotate = (minute + 6.2 * 6) * 6 + second * 0.1 + 180;
+    const hrRotate = (hour + 6) * 30 + minute * 0.5 + 180;
+
+    secHandler.setAttribute('style', 'transform: rotate(' + secRotate + 'deg)');
+
+    minHandler.setAttribute('style', 'transform: rotate(' + minRotate + 'deg)');
+
+    hrHandler.setAttribute('style', 'transform: rotate(' + hrRotate + 'deg)');
+    window.requestAnimationFrame(showTime);
+
     hourElement.textContent = hour < 10 ? '0' + hour : hour;
     minuteElement.textContent = minute < 10 ? '0' + minute : minute;
     secondElement.textContent = second < 10 ? '0' + second : second;
@@ -176,6 +192,7 @@
   }
   function handleDone() {
     modal.classList.add("none")
+    updateClock()
   }
   function handleShowModal() {
     modal.classList.remove("none")
@@ -188,13 +205,8 @@
   hourInput.addEventListener('input', updateClock);
   minuteInput.addEventListener('input', updateClock);
   secondInput.addEventListener('input', updateClock);
+
   initClock()
-  setInterval(() => { showTime() }, 1000);
-  // setInterval(() => { showTime(), initClock() }, 1000);
-  // setInterval(() => { showTime(), initClock() }, 1000 * 60);
-  // setInterval(() => { showTime(), initClock() }, 1000 * 60 * 12);
-
-
 
 
 
