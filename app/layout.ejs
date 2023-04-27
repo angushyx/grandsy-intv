@@ -12,13 +12,40 @@
 <body>
 
   <div class="container">
+    <div class="modal none">
+      <header>時間調整</header>
+
+      <ul class="clockEditWrapper">
+        <li>
+          <input type="number" id="hour" class="clockEditInput" min="0" max="23" value="0"><label for="hour">時</label>
+        </li>
+        <li>
+          <input type="number" id="minute" class="clockEditInput" min="0" max="59" value="0"><label
+            for="minute">分</label>
+        </li>
+        <li>
+          <input type="number" id="second" class="clockEditInput" min="0" max="59" value="0"><label
+            for="second">秒</label>
+        </li>
+      </ul>
+      <div class="btnWrapper">
+        <button id="cancel"><i class="fa-solid fa-x"></i></button>
+        <button id="done"><i class="fa-solid fa-check"></i></button>
+      </div>
+    </div>
     <div class="calendar">
       <div class="year"></div>
+
       <div class="month"></div>
+
       <div class="date"></div>
 
     </div>
-
+    <div class="text-w">
+      <span class="hour"></span> :
+      <span class="minute"></span> :
+      <span class="second"></span>
+    </div>
     <div class="clock ">
 
       <div class="center abs-center"></div>
@@ -32,7 +59,7 @@
         <div class="hour-hand"></div>
       </div>
     </div>
-    <i class="fa-solid fa-pen-to-square"></i>
+    <i class=" fa-solid fa-pen-to-square"></i>
   </div>
 
   <script src="./assets/js/vendors.js"></script>
@@ -43,15 +70,25 @@
 
 
 
-
+  const clockEditInputs = document.querySelectorAll('.clockEditInput');
   const calendar = document.querySelector('.calendar');
-  // const clockFace = document.querySelector('.minute-clock');
-
   const hrHandler = document.querySelector('.hrHandler');
   const center = document.querySelector('.center');
   const minHandler = document.querySelector('.minHandler');
   const secHandler = document.querySelector('.secHandler');
-
+  const hourElement = document.querySelector('.hour');
+  const minuteElement = document.querySelector('.minute');
+  const secondElement = document.querySelector('.second');
+  const hourInput = document.querySelector('#hour');
+  const minuteInput = document.querySelector('#minute');
+  const secondInput = document.querySelector('#second');
+  const cancelBtn = document.querySelector('#cancel');
+  const doneBtn = document.querySelector('#done');
+  const modal = document.querySelector('.modal');
+  const editBtn = document.querySelector('.fa-pen-to-square');
+  const year = document.querySelector('.year');
+  const month = document.querySelector('.month');
+  const day = document.querySelector('.date');
 
 
   // 產生 60 個刻度
@@ -63,36 +100,100 @@
       ? timePoint.classList.add('five-min')
       : timePoint.classList.add('one-min');
 
+    if ((i % 5 === 0) === false) { calendarPoint.classList.add("one-min-calendar") }
 
     timePoint.style.transform = 'translate(-50%,-50%) rotate(' + i * 6 + 'deg)';
-    // calendarPoint.style.transform = 'translate(-50%) rotate(' + i * 6 + 'deg)';
+    calendarPoint.style.transform = ' rotate(' + i * 6 + 'deg)';
+
 
 
     center.appendChild(timePoint);
-    // calendar.appendChild(calendarPoint);
+    calendar.appendChild(calendarPoint);
   }
 
 
+  function initClock() {
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const second = now.getSeconds();
+    const yearNum = now.getFullYear();
+    const monthNum = now.getMonth() + 1;
+    const dayNum = now.getDate();
+    hourElement.textContent = hour < 10 ? '0' + hour : hour;
+    minuteElement.textContent = minute < 10 ? '0' + minute : minute;
+    secondElement.textContent = second < 10 ? '0' + second : second;
+    // 將現在時間設定到 input 欄位上
+    hourInput.value = hour;
+    minuteInput.value = minute;
+    secondInput.value = second;
+
+    year.innerHTML = yearNum
+    month.innerHTML = monthNum + "月"
+    day.innerHTML = dayNum
+
+  }
+
+
+
+
+
   function showTime() {
+
     const timeData = new Date();
     const hr = timeData.getHours();
     const min = timeData.getMinutes();
     const sec = timeData.getSeconds();
     const secMillis = timeData.getMilliseconds();
-    const secRotate = sec * 6 + secMillis * 0.006 + 180;
+    const secRotate = sec * 6 + secMillis * 0.006 + 190;
     const minRotate = min * 6 + sec * 0.1 + 180;
     const hrRotate = hr * 30 + min * 0.5 + 180;
 
-
-
     secHandler.setAttribute('style', 'transform: rotate(' + secRotate + 'deg)');
+    // console.log(secRotate)
     minHandler.setAttribute('style', 'transform: translateX(-50%) rotate(' + minRotate + 'deg)');
     hrHandler.setAttribute('style', 'transform: translateX(-50%) rotate(' + hrRotate + 'deg)');
     window.requestAnimationFrame(showTime);
   }
-  // window.requestAnimationFrame(showTime);
+  window.requestAnimationFrame(showTime);
+  // 修改上面
+  function updateClock() {
+    const hour = hourInput.value;
+    const minute = minuteInput.value;
+    const second = secondInput.value;
+    hourElement.textContent = hour < 10 ? '0' + hour : hour;
+    minuteElement.textContent = minute < 10 ? '0' + minute : minute;
+    secondElement.textContent = second < 10 ? '0' + second : second;
+  }
 
-  setInterval(showTime, 1000);
+
+
+  function handleCancel() {
+    modal.classList.add("none")
+  }
+  function handleDone() {
+    modal.classList.add("none")
+  }
+  function handleShowModal() {
+    modal.classList.remove("none")
+  }
+
+
+  cancelBtn.addEventListener("click", handleCancel)
+  doneBtn.addEventListener("click", handleDone)
+  editBtn.addEventListener("click", handleShowModal)
+  hourInput.addEventListener('input', updateClock);
+  minuteInput.addEventListener('input', updateClock);
+  secondInput.addEventListener('input', updateClock);
+
+  setInterval(() => { showTime(), initClock() }, 1000);
+  // setInterval(() => { showTime(), initClock() }, 1000 * 60);
+  // setInterval(() => { showTime(), initClock() }, 1000 * 60 * 12);
+
+
+
+
+
 </script>
 
 </html>
