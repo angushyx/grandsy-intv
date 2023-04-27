@@ -10,17 +10,89 @@
 </head>
 
 <body>
-  <header class="header">
-    這是 header
-  </header>
 
-  <%- contents %>
+  <div class="container">
+    <div class="calendar">
+      <div class="year"></div>
+      <div class="month"></div>
+      <div class="date"></div>
 
-  <footer class="footer">
-    footer
-  </footer>
+    </div>
+
+    <div class="clock ">
+
+      <div class="center abs-center"></div>
+      <div class="secHandler">
+        <div class="hand second-hand"></div>
+      </div>
+      <div class="minHandler abs-center">
+        <div class="minute-hand"></div>
+      </div>
+      <div class="hrHandler ">
+        <div class="hour-hand"></div>
+      </div>
+    </div>
+    <i class="fa-solid fa-pen-to-square"></i>
+  </div>
+
   <script src="./assets/js/vendors.js"></script>
   <script src="./assets/js/all.js"></script>
 </body>
+<script src="https://kit.fontawesome.com/d6fadda383.js" crossorigin="anonymous"></script>
+<script>
+
+
+
+
+  const calendar = document.querySelector('.calendar');
+  // const clockFace = document.querySelector('.minute-clock');
+
+  const hrHandler = document.querySelector('.hrHandler');
+  const center = document.querySelector('.center');
+  const minHandler = document.querySelector('.minHandler');
+  const secHandler = document.querySelector('.secHandler');
+
+
+
+  // 產生 60 個刻度
+  for (var i = 0; i < 60; i++) {
+    const timePoint = document.createElement('div');
+    const calendarPoint = document.createElement('div');
+
+    i % 5 === 0
+      ? timePoint.classList.add('five-min')
+      : timePoint.classList.add('one-min');
+
+
+    timePoint.style.transform = 'translate(-50%,-50%) rotate(' + i * 6 + 'deg)';
+    // calendarPoint.style.transform = 'translate(-50%) rotate(' + i * 6 + 'deg)';
+
+
+    center.appendChild(timePoint);
+    // calendar.appendChild(calendarPoint);
+  }
+
+
+  function showTime() {
+    const timeData = new Date();
+    const hr = timeData.getHours();
+    const min = timeData.getMinutes();
+    const sec = timeData.getSeconds();
+    const secMillis = timeData.getMilliseconds();
+    const secRotate = sec * 6 + secMillis * 0.006 + 180;
+    const minRotate = min * 6 + sec * 0.1 + 180;
+    const hrRotate = hr * 30 + min * 0.5 + 180;
+
+
+
+    secHandler.setAttribute('style', 'transform: rotate(' + secRotate + 'deg)');
+    minHandler.setAttribute('style', 'transform: translateX(-50%) rotate(' + minRotate + 'deg)');
+    hrHandler.setAttribute('style', 'transform: translateX(-50%) rotate(' + hrRotate + 'deg)');
+    window.requestAnimationFrame(showTime);
+  }
+  // window.requestAnimationFrame(showTime);
+
+  setInterval(showTime, 1000);
+</script>
 
 </html>
